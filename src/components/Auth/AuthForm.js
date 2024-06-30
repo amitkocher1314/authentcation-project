@@ -1,11 +1,12 @@
 import { useState, useRef } from 'react';
 
 import classes from './AuthForm.module.css';
+// SEE AUTHFORM .JS FILE
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const[isLoading,setIsLoading] = useState(false);
-  const emailRef = useRef();
+  const[isLoading,setIsLoading] = useState(false);     //SEE THIS
+  const emailRef = useRef();                             //SEE THIS
   const passwordRef = useRef();
 
   const switchAuthModeHandler = () => {
@@ -13,7 +14,7 @@ const AuthForm = () => {
   };
 
   const submitHandler = (event)=>{
-    event.preventDefault();
+    event.preventDefault();                                       //SEE THIS
 
     const enteredEmail = emailRef.current.value;
     const enteredPassword = passwordRef.current.value;
@@ -74,8 +75,8 @@ const AuthForm = () => {
         </div>
         <div className={classes.actions}>
 
-        {!isLoading && <button type='submit'>{isLogin ? 'Login' : 'Create Account'}</button>}
-        {isLoading && <p>Loading....</p>}
+        {!isLoading && <button type='submit'>{isLogin ? 'Login' : 'Create Account'}</button>}       //SEE THIS
+        {isLoading && <p>Loading....</p>}                                                             //SEE THIS
           <button
             type='button'
             className={classes.toggle}
