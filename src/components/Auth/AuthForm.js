@@ -19,12 +19,15 @@ const AuthForm = () => {
     const enteredEmail = emailRef.current.value;
     const enteredPassword = passwordRef.current.value;
         
-     setIsLoading(true)
+     setIsLoading(true);
+     let url;
     if (isLogin){
-
+       url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCsmq92tnnIqmTW8V5Zas257RF0G2lRtXw"
     }
     else{
-      fetch("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCsmq92tnnIqmTW8V5Zas257RF0G2lRtXw",
+      url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCsmq92tnnIqmTW8V5Zas257RF0G2lRtXw"
+    }
+      fetch(url,
        {
         method:'POST',
         body: JSON.stringify({
@@ -39,7 +42,7 @@ const AuthForm = () => {
       ).then(res =>{
         setIsLoading(false)
         if(res.ok){
-
+          return res.json();
         }
         else{
         return  res.json().then((data)=>{             //TO GET BACK DATA WE USE res.json AND SINCE ITS PROMISE SO THEN USE
@@ -48,13 +51,18 @@ const AuthForm = () => {
            if(data && data.error && data.error.message){            //TO UNDERSTAND THIS IF SEE IN CONSOLE ITS SHOWS ALL THOSE DATA DATA.ERROR 
             errorMessage = data.error.message;
            }
-           alert(errorMessage);
+            throw new Error(errorMessage)           // throw new Error(errorMessage): This line creates a new Error object with the message errorMessage and throws it. This effectively stops the current flow and moves to the nearest catch block, where the error can be handled.
         });
         }
-      } );
+      } ).then((data) =>{
+        console.log(data)
+      })
+        .catch((err)=>{
+          alert(err.message)
+        });
     }
 
-  }
+  
 
   return (
     <section className={classes.auth}>
@@ -75,8 +83,8 @@ const AuthForm = () => {
         </div>
         <div className={classes.actions}>
 
-        {!isLoading && <button type='submit'>{isLogin ? 'Login' : 'Create Account'}</button>}       //SEE THIS
-        {isLoading && <p>Loading....</p>}                                                             //SEE THIS
+        {!isLoading && <button type='submit'>{isLogin ? 'Login' : 'Create Account'}</button>}       
+        {isLoading && <p>Loading....</p>}                                                            
           <button
             type='button'
             className={classes.toggle}
