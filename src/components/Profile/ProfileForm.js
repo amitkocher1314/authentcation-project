@@ -1,14 +1,19 @@
 import classes from './ProfileForm.module.css';
 import React, {useRef,useContext} from 'react';
 import AuthContext from '../../store/auth-context';
+import {useHistory} from "react-router-dom"
 
 //NOTE WE CAN ALSO CHECK REQUEST SENT OR NOT THROUGH INSPECT IN BROWSER
 
 
 const ProfileForm = () => {
+
+  const history = useHistory();
   const newPasswordInputRef = useRef();
   const authCtx = useContext(AuthContext);
- const submitHandler = (event)=>{
+ 
+ 
+  const submitHandler = (event)=>{
   event.preventDefault();
 
    const newPassword = newPasswordInputRef.current.value;
@@ -24,7 +29,9 @@ const ProfileForm = () => {
     headers:{
       'Content-Type':'application/json'
     }
-   })
+   }).then(
+    history.replace('/')         //BASICALLY REPLACE TELL REACT THAT CHANGE URL WITHOUT ALLOWING TO GO BACK TO PREVIOUS URL
+   )
  }
 
   return (
